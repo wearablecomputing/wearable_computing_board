@@ -1,8 +1,8 @@
 /***************************************
-
 Wearable Computing Board Arduino Sketch
-
 ***************************************/
+
+/* Arduino libraries */
 
 #include <WiFiNINA.h>         // Wifi library
 #include <WiFiUdp.h>          // UDP library
@@ -13,19 +13,21 @@ Wearable Computing Board Arduino Sketch
 #include <Adafruit_MPU6050.h> // External IMU
 #include <Adafruit_DRV2605.h> // Haptic Actuator
 
-#include "WiFi_Networks.h"
+/* Header files */
+
 #include "Network_Settings.h"
+#include "my_WiFi_Network.h"
+// #include "WiFi_Networks.h" //to be used at UdK, comment out when needed. The file is not being tracked on GitHub.
 
 Adafruit_DRV2605 drv; // actuator
 
-/* WiFi variables are stored in WiFi_Networks.h */
+/* WiFi variables are stored in my_WiFi_Network.h and WiFi_Networks.h */
 char ssid[] = WC_BOL_SSID;
 char pass[] = WC_BOL_PASS;
 
 /*
   UDP Variables
 */
-
 const char* computerIP = COMPUTER_IP; // ENTER YOUR COMPUTER'S IP BETWEEN QUOTES Be sure to take the IP from the right network (WiFi or Ethernet)
 
 // OSC ports
