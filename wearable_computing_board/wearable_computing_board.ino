@@ -204,7 +204,7 @@ void loop()
   Udp.endPacket(); // mark the end of the OSC Packet
 
   bundle.empty();
-  delay(100);
+  delay(20);
   
 }
 
