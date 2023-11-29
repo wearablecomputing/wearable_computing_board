@@ -184,12 +184,12 @@ void loop()
   }
 
   // Compose OSC Message
-  bundle.add("/in0").add(a0);
-  bundle.add("/in1").add(a1);
-  bundle.add("/in2").add(a2);
-  bundle.add("/in3").add(a3);
-  bundle.add("/in6").add(a6);
-  bundle.add("/in7").add(a7);
+  bundle.add("/a0").add(a0);
+  bundle.add("/a1").add(a1);
+  bundle.add("/a2").add(a2);
+  bundle.add("/a3").add(a3);
+  bundle.add("/a6").add(a6);
+  bundle.add("/a7").add(a7);
   bundle.add("/intIMU/acc").add(accelX).add(accelY).add(accelZ);
   bundle.add("/intIMU/gyro").add(gyroX).add(gyroY).add(gyroZ);
   bundle.add("/extIMU/acc").add(extIMUAccX).add(extIMUAccY).add(extIMUAccZ);
