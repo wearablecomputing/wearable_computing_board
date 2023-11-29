@@ -143,6 +143,8 @@ void loop()
   a1 = analogRead(A1);
   a2 = analogRead(A2);
   a3 = analogRead(A3);
+  a6 = analogRead(A6);
+  a7 = analogRead(A7);
 
   // Internal IMU Accelerometer
   if (IMU.accelerationAvailable())
