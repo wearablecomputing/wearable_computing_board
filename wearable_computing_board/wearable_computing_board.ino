@@ -22,8 +22,8 @@ Wearable Computing Board Arduino Sketch
 Adafruit_DRV2605 drv; // actuator
 
 /* WiFi variables are stored in my_WiFi_Network.h and WiFi_Networks.h */
-char ssid[] = WC_BOL_SSID;
-char pass[] = WC_BOL_PASS;
+char ssid[] = WIFI_SSID;
+char pass[] = WIFI_PASS;
 
 /*
   UDP Variables
