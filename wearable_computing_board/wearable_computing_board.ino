@@ -1,5 +1,5 @@
 /***************************************
-Wearable Computing Board Arduino Sketch
+  Wearable Computing Board Arduino Sketch
 ***************************************/
 
 /* Arduino libraries */
@@ -59,6 +59,9 @@ float extIMUX, extIMUY, extIMUZ = 0.0f;
 float extIMUAccX, extIMUAccY, extIMUAccZ = 0.0f;
 float extIMUGyroX, extIMUGyroY, extIMUGyroZ = 0.0f;
 
+// Variable to track if IMU is defined
+bool imu_defined = false;
+
 // flags to check if sensors are connected
 bool externalIMU_connected = true;
 
@@ -96,6 +99,26 @@ void setup()
     Serial.println("Error when initializing IMU");
     while (1);
   }
+
+  // Attempt counter
+  int retryCount = 0;
+
+  // Attempt to initialize the IMU
+  while (!IMU.begin() && retryCount < 10) {
+    Serial.println("Error when initializing IMU, retrying...");
+    delay(500);
+    retryCount++;
+  }
+
+  // Check if IMU failed to initialize after maximum retries
+  if (retryCount == maxRetries) {
+    Serial.println("IMU initialization failed after multiple attempts.");
+    imu_defined = false;
+    // Handle the failure as needed, e.g., disable IMU-dependent features
+  } else {
+    Serial.println("IMU initialized successfully.");
+  }
+
 
   if (!mpu.begin()) {
     Serial.println("Failed to find MPU6050 chip");
@@ -147,27 +170,29 @@ void loop()
   a7 = analogRead(A7);
 
   // Internal IMU Accelerometer
-  if (IMU.accelerationAvailable())
-  {
-    // Get values from sensor
-    IMU.readAcceleration(accelX, accelY, accelZ);
+  if (imu_defined) {
+    if (IMU.accelerationAvailable())
+    {
+      // Get values from sensor
+      IMU.readAcceleration(accelX, accelY, accelZ);
 
-    // Convert values to byte arrays
-    floatToBuff(accelXBuff, accelX);
-    floatToBuff(accelYBuff, accelY);
-    floatToBuff(accelZBuff, accelZ);
-  }
+      // Convert values to byte arrays
+      floatToBuff(accelXBuff, accelX);
+      floatToBuff(accelYBuff, accelY);
+      floatToBuff(accelZBuff, accelZ);
+    }
 
-  // Internal IMU Gyroscope
-  if (IMU.gyroscopeAvailable())
-  {
-    // Get values from sensor
-    IMU.readGyroscope(gyroX, gyroY, gyroZ);
+    // Internal IMU Gyroscope
+    if (IMU.gyroscopeAvailable())
+    {
+      // Get values from sensor
+      IMU.readGyroscope(gyroX, gyroY, gyroZ);
 
-    // Convert values to byte arrays
-    floatToBuff(gyroXBuff, gyroX);
-    floatToBuff(gyroYBuff, gyroY);
-    floatToBuff(gyroZBuff, gyroZ);
+      // Convert values to byte arrays
+      floatToBuff(gyroXBuff, gyroX);
+      floatToBuff(gyroYBuff, gyroY);
+      floatToBuff(gyroZBuff, gyroZ);
+    }
   }
 
   if (externalIMU_connected)
@@ -190,8 +215,10 @@ void loop()
   bundle.add("/a3").add(a3);
   bundle.add("/a6").add(a6);
   bundle.add("/a7").add(a7);
-  bundle.add("/intIMU/acc").add(accelX).add(accelY).add(accelZ);
-  bundle.add("/intIMU/gyro").add(gyroX).add(gyroY).add(gyroZ);
+  if (imu_defined) {
+    bundle.add("/intIMU/acc").add(accelX).add(accelY).add(accelZ);
+    bundle.add("/intIMU/gyro").add(gyroX).add(gyroY).add(gyroZ);
+  }
   bundle.add("/extIMU/acc").add(extIMUAccX).add(extIMUAccY).add(extIMUAccZ);
   bundle.add("/extIMU/gyro").add(extIMUGyroX).add(extIMUGyroY).add(extIMUGyroZ);
   bundle.add("/diagnostics/wifi").add(WiFi.RSSI());
@@ -205,7 +232,7 @@ void loop()
 
   bundle.empty();
   delay(20);
-  
+
 }
 
 
