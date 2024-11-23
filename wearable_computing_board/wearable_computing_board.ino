@@ -111,7 +111,7 @@ void setup()
   }
 
   // Check if IMU failed to initialize after maximum retries
-  if (retryCount == maxRetries) {
+  if (retryCount == 10) {
     Serial.println("IMU initialization failed after multiple attempts.");
     imu_defined = false;
     // Handle the failure as needed, e.g., disable IMU-dependent features
