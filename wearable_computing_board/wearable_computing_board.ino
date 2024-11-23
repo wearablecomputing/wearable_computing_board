@@ -93,13 +93,6 @@ void setup()
   Serial.println("\nStarting connection to server...");
   Udp.begin(localPort);
 
-  // Check IMU (accellerometer and gyro unit) is active
-  if (!IMU.begin())
-  {
-    Serial.println("Error when initializing IMU");
-    while (1);
-  }
-
   // Attempt counter
   int retryCount = 0;
 
